@@ -36,17 +36,15 @@ def scroll_down(driver):
         time.sleep(0.5)
 
 def save_img(driver,name):
+    img_folder = '../img/' + name
+    if not os.path.isdir(img_folder):
+        os.mkdir(img_folder)
+    else: return
+
     img_url = []
     imgs = driver.find_elements(By.CSS_SELECTOR, 'a.place_thumb>img')
     for image in imgs :
-        url = image.get_attribute('src')
-        img_url.append(url)
-
-    img_folder = '../img/' + name
-    if not os.path.isdir(img_folder) :
-        os.mkdir(img_folder)
-    else:
-        return
+        img_url.append(image.get_attribute('src'))
 
     map_of_url_index = {}
 
@@ -91,9 +89,9 @@ if __name__ == "__main__":
                 [37.542828, 127.092249]]
 
     for i in range(len(position)):
-        print(i)
+        print(i + "번째 좌표에 대한 탐색 진행 중")
         start = time.time()  # 시작 시간 저장
         info = Crawling_Naver(position[i][0],position[i][1])
         for i in range(len(info)):
             collect_data(info[i][0],info[i][1])
-        print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
+        print(i + " 번째 좌표에 대한 탐색 종료, time :" + time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
