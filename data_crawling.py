@@ -26,12 +26,12 @@ def Crawling_Naver(latitude, longitude):
 
 
 def make_url(id):
-    url = "https://pcmap.place.naver.com/restaurant/" + id + "/photo"
+    url = "https://pcmap.place.naver.com/restaurant/" + id + "/photo?filterType=음식"
     return url
 
 
 def scroll_down(driver):
-    num_of_scroll = 9  # 스크롤 횟수 (커질수록 가져오는 이미지 양 많아짐)
+    num_of_scroll = 8  # 스크롤 횟수 (커질수록 가져오는 이미지 양 많아짐)
     for i in range(num_of_scroll):
         driver.find_element(By.CSS_SELECTOR, 'body').send_keys(Keys.PAGE_DOWN)
         time.sleep(0.3)
@@ -104,9 +104,11 @@ if __name__ == "__main__":
     ### 직접 위도, 경도 설정 필요
     # longitude = 126.93632421051524  # 현재 위도
     # latitude = 37.55433832843096  # 현재 경도
-    points = [[37.55433832843096, 126.93632421051524],
-              [37.55433832843096, 126.93632421051524]]
 
-    for la, lo in points:
+    points = []
+
+    for idx, [la, lo] in enumerate(points):
+        print('%s번째 location => [%s, %s]'%(idx+1, la, lo))
         places_info = Crawling_Naver(la, lo)
         collect_data(places_info)
+        print()
