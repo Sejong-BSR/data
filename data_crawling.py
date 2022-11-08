@@ -62,7 +62,7 @@ def load_and_save_img(driver, name, cate):
         line = name+'_'+str(key) + ' : ' + val + '\n'
         f.write(line)
 
-    print(len(img_info))
+    print("-> %d개 저장완료!" %len(img_info))
 
 
 if __name__ == "__main__":
