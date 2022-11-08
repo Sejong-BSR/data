@@ -42,6 +42,7 @@ def save_img(driver,name):
         img_url.append(image.get_attribute('src'))
 
     map_of_url_index = {}
+
     img_folder = '../img/' + name
     for index, link in enumerate(img_url) :
         urllib.request.urlretrieve(link, f'{img_folder}/{name}_{index}.jpg')
@@ -96,6 +97,7 @@ if __name__ == "__main__":
         print(f"{i+1} + 번째 좌표에 대한 탐색 진행 중")
         start = time.time()  # 시작 시간 저장
         info = Crawling_Naver(position[i][0],position[i][1])
-        for j in range(len(info)):
-            collect_data(info[j][0],info[j][1])
+        print(info)
+        # for j in range(len(info)):
+        #     collect_data(info[j][0],info[j][1])
         print(f"{i+1} + 번째 좌표에 대한 탐색 종료, time : {time.time() - start}")
