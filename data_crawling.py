@@ -11,7 +11,6 @@ import json
 from urllib.request import urlopen
 from PIL import Image
 
-
 def Crawling_Naver(latitude, longitude):
     url_temp = 'https://map.naver.com/v5/api/search?caller=pcweb&query=%EC%9D%8C%EC%8B%9D%EC%A0%90&type=all&searchCoord={};{}&page={}&displayCount={}&isPlaceRecommendationReplace=true&lang=ko'
     displayCount = 100  # 탐색할 가게 개수
@@ -24,18 +23,15 @@ def Crawling_Naver(latitude, longitude):
 
     return result
 
-
 def make_url(id):
     url = "https://pcmap.place.naver.com/restaurant/" + id + "/photo"
     return url
-
 
 def scroll_down(driver):
     num_of_scroll = 6  # 스크롤 횟수 (커질수록 가져오는 이미지 양 많아짐)
     for i in range(num_of_scroll):
         driver.find_element(By.CSS_SELECTOR, 'body').send_keys(Keys.PAGE_DOWN)
         time.sleep(0.5)
-
 
 def load_and_save_img(driver, name, cate):
     img_info = dict()
@@ -63,9 +59,6 @@ def load_and_save_img(driver, name, cate):
 
 
 if __name__ == "__main__":
-    chrome_driver_dir = 'C:/Users/jaehoon/chromedriver.exe'
-    options = webdriver.ChromeOptions() # 옵션 생성
-    options.add_argument("headless") # 창 숨기는 옵션 추가
     position = [[37.530816, 127.066356],
                 [37.540060, 127.070594],
                 [37.546457, 127.073770],
@@ -88,6 +81,11 @@ if __name__ == "__main__":
                 [37.542828, 127.092249]]
 
     for i in range(len(position)):
+        chrome_driver_dir = 'C:/Users/jaehoon/chromedriver.exe'
+        options = webdriver.ChromeOptions() # 옵션 생성
+        options.add_argument("headless") # 창 숨기는 옵션 추가
+
+        print(f"{i}번째 좌표 탐색 시작",end="\n")
         info = Crawling_Naver(position[i][0], position[i][1])
         for idx, place_info in enumerate(info):
             place_id, name, cate, url = place_info
@@ -117,3 +115,4 @@ if __name__ == "__main__":
             driver.get(url)
             scroll_down(driver)
             load_and_save_img(driver, name, cate)
+        print(f"{i}번째 좌표 탐색 종료",end="\n")
