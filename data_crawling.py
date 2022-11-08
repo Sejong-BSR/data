@@ -70,8 +70,10 @@ if __name__ == "__main__":
     options = webdriver.ChromeOptions() # 옵션 생성
     options.add_argument("headless") # 창 숨기는 옵션 추가
 
+    ### 직접 위도, 경도 설정 필요
     latitude = 126.93632421051524  # 현재 위도
     longitude = 37.55433832843096  # 현재 경도
+
     info = Crawling_Naver(latitude, longitude)
     for idx, place_info in enumerate(info):
         place_id, name, cate, url = place_info
