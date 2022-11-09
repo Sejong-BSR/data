@@ -20,7 +20,12 @@ def Crawling_Naver(latitude, longitude):
     json_data = json.load(response)['result']['place']['list']
     result = []
     for place in json_data:
-        result.append([place, make_url(place['id'])])
+        except_case = False
+        for except_char in ['/','\\','<','>','?','%',':','"','.','|']:
+            if except_char in place['name']:
+                except_case = True
+        if not except_case:
+            result.append([place, make_url(place['id'])])
 
     return result
 
@@ -34,7 +39,7 @@ def scroll_down(driver):
     num_of_scroll = 8  # 스크롤 횟수 (커질수록 가져오는 이미지 양 많아짐)
     for i in range(num_of_scroll):
         driver.find_element(By.CSS_SELECTOR, 'body').send_keys(Keys.PAGE_DOWN)
-        time.sleep(0.3)
+        time.sleep(0.5)
 
 
 def load_and_save_img(driver, place, img_folder):
@@ -69,6 +74,7 @@ def load_and_save_img(driver, place, img_folder):
 
 def collect_data(info):
     for idx, place_info in enumerate(info):
+        if ':' in place_info[0]['name']: continue
         chrome_driver_dir = 'C:/Users/bob8d/OneDrive/Desktop/chromedriver_win32/chromedriver.exe'
         options = webdriver.ChromeOptions()  # 옵션 생성
         options.add_argument("headless")  # 창 숨기는 옵션 추가
@@ -106,6 +112,13 @@ if __name__ == "__main__":
     # latitude = 37.55433832843096  # 현재 경도
 
     points = []
+    # f = open("../locs.txt", 'r', encoding="UTF-8")
+    # while True:
+    #     line = f.readline()
+    #     if not line: break
+    #     la, lo, _, _ = line.split()
+    #     points.append([la[:-1],lo])
+    # f.close()
 
     for idx, [la, lo] in enumerate(points):
         print('%s번째 location => [%s, %s]'%(idx+1, la, lo))
